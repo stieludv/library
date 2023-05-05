@@ -30,9 +30,16 @@ console.log(books)
 // Create the book elements for the book-container
 function createBookElement(book) {
     const bookElement = document.createElement("div");
-    const closeButtonElement = document.createTextNode("x");
-    const bookInfoElement = document.createTextNode(book.info());
-    bookElement.append(closeButtonElement, bookInfoElement)
+
+    bookElement.innerHTML = `
+        <p>X</p>
+        <p>${book.info()}</p>
+        <div>
+            <label for="read-pages">Read:</label>
+            <input id="read-pages" name="read-pages" value="${book.read}" max="${book.pages}" min="0" step="1" type="number" />
+            <button type="button">Bookmarks</button>
+        </div>
+    `;
 
     // I also need an input at the bottom to adjust the current page I'm on
     // I also need a bookmark icon to click to open the modal for bookmarks (digital bookmarks of pages + notes)
