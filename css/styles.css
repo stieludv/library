@@ -109,5 +109,5 @@ body {
 }
 
 .credit-container p, .credit-container a {  
-    color: white;
+    color: var(--light-color);
 }
