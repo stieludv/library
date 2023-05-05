@@ -25,4 +25,11 @@ Book.prototype.info = function() {
 books.push(new Book("The Hobbit", "J.R.R. Tolkien", 295, 0));
 books.push(new Book("The Hobbit", "J.R.R. Tolkien", 295, 78));
 books.push(new Book("The Hobbit", "J.R.R. Tolkien", 295, 295));
-console.log(books);
+console.log(books)
+
+// Get the container element where we want to add books
+const bookContainer = document.querySelector(".book-container");
+
+
+
+console.log(bookContainer);
