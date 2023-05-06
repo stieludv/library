@@ -71,6 +71,33 @@ button {
     padding: 2rem;
 }
 
+.book-container > div[data-index] {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.book-container > div[data-index] > .book-info {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+}
+
+.book-container > div[data-index] > .book-info > span > span:first-child {
+/*     font-size: 160%;
+    font-weight: 600; */
+}
+
+
+.book-container > div[data-index] > .book-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.remove-book {
+    justify-self: right;
+}
+
 .book-container .book-menu {
     display: grid;
     grid-template-columns: 24px auto;
@@ -80,6 +107,7 @@ button {
 
 .book-container .book-menu ul {
     grid-column: 1 / span 2;
+    padding-left: calc(1rem + 3px);
 }
 
 
@@ -143,4 +171,15 @@ button {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.add-book-form {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    gap: 1rem;
+}
+
+.add-book-form fieldset {
+    display: flex;
+    flex-direction: column;
 }

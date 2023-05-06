@@ -34,11 +34,16 @@ function createBookElement(book) {
     bookElement.dataset.index = books.indexOf(book);
 
     bookElement.innerHTML = `
-        <p>X</p>
-        <p>${book.info()}</p>
-        <div>
-            <label for="read-pages">Read:</label>
-            <input id="read-pages" name="read-pages" value="${book.read}" max="${book.pages}" min="0" step="1" type="number" />
+        <button class="remove-book">X</button>
+        <div class="book-info">
+            <h2>${book.title}</h2>
+            <span><span>${book.title}</span><span>${book.info().slice(book.title.length)}</span></span>
+        </div>
+        <div class="book-controls">
+            <span>
+                <label for="read-pages">Read:</label>
+                <input id="read-pages" name="read-pages" value="${book.read}" max="${book.pages}" min="0" step="1" type="number" />
+            </span>
             <button type="button">Bookmarks</button>
         </div>
     `;
@@ -59,6 +64,7 @@ const addBook = document.querySelector(".add-book");
 books.forEach(book => {
     const bookElement = createBookElement(book);
     bookContainer.insertBefore(bookElement, addBook);
+    addBookEventListeners();
 });
 
 
@@ -97,7 +103,31 @@ function closeModal() {
 // Add book button
 addBook.addEventListener("click", () => {
     // Open modal with inputs for a new book
-    const modal = createModal("Add Book", "Add a new book to the library", "Add");
+    const modalBody = `
+        <form class="add-book-form" method="GET" action="#">
+            <fieldset>
+                <label for="title">Title:</label>
+                <input id="title" name="title" type="text" required />
+            </fieldset>
+            <fieldset>
+                <label for="author">Author:</label>
+                <input id="author" name="author" type="text" required />
+            </fieldset>
+            <fieldset>
+                <label for="pages">Pages:</label>
+                <input id="pages" name="pages" type="number" min="0" required />
+            </fieldset>
+            <fieldset>
+                <label for="read-pages">Read Pages:</label>
+                <input id="read-pages" name="read-pages" type="number" min="0" required />
+            </fieldset>
+    `;
+    const modalFooter = `
+            <button type="button">Add Book</button>
+        </form>
+    `;
+    // const modal = createModal("Add Book", "Add a new book to the library", "Add");
+    const modal = createModal("Add Book", modalBody, modalFooter);
     document.body.insertAdjacentHTML("beforeend", modal);
     addModalEventListeners();
 
@@ -115,7 +145,20 @@ addBook.addEventListener("click", () => {
 
 
 // Book remove button
+function addBookEventListeners() {
+    // Book remove button
+    const removeBookButtons = document.querySelectorAll(".remove-book");
+    removeBookButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            // Remove book from books array
+            const bookIndex = e.target.parentElement.dataset.index;
+            books.splice(bookIndex, 1);
 
+            // Remove book from DOM
+            e.target.parentElement.remove();
+        });
+    });
+}
 
 
 // Closing Modal:
