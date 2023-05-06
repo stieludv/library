@@ -177,11 +177,11 @@ function addBookEventListeners() {
                 <form class="add-book-form" method="GET" action="#">
                     <fieldset>
                         <label for="bookmark-1">Bookmark #1: Page 234</label>
-                        <textarea id="bookmark-1" name="bookmark-1" type="text" required value="My notes about this bookmark/page..." />
+                        <input id="bookmark-1" name="bookmark-1" type="text" required value="My notes about this bookmark/page..." />
                     </fieldset>
                     <fieldset>
                         <label for="bookmark-2">Bookmark #2: Page 10</label>
-                        <textarea id="bookmark-2" name="bookmark-2" type="text" required value="Notes about this page and book..." />
+                        <input id="bookmark-2" name="bookmark-2" type="text" required value="Notes about this page and book..." />
                     </fieldset>
                 </form>
             `;
