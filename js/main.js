@@ -69,7 +69,7 @@ function createModal(title, body, footer) {
             <div class="modal-container">
                 <div class="modal-header">
                     <h2>${title}</h2>
-                    <span>X</span>
+                    <button class="close-modal-button">X</button>
                 </div>
                 <div class="modal-body">
                     ${body}
@@ -99,6 +99,7 @@ addBook.addEventListener("click", () => {
     // Open modal with inputs for a new book
     const modal = createModal("Add Book", "Add a new book to the library", "Add");
     document.body.insertAdjacentHTML("beforeend", modal);
+    addModalEventListeners();
 
     // When user clicks submit, create a new book and add it to the book-container
     
@@ -118,10 +119,29 @@ addBook.addEventListener("click", () => {
 
 
 // Closing Modal:
-// Modal remove button
+function addModalEventListeners() {
+    // Modal remove button
+    const closeModalButton = document.querySelector(".close-modal-button")
+    if (closeModalButton !== null) {
+        closeModalButton.addEventListener("click", (e) => {
+            closeModal();
+        });
+    }
 
-
-// Modal wrapper click
-
+    // Modal wrapper click
+    const modalWrapper = document.querySelector(".modal-wrapper");
+    if (modalWrapper !== null) {
+        modalWrapper.addEventListener("click", (e) => {
+            if (e.target === modalWrapper) {
+                closeModal();
+            }
+        });
+    }
+}
 
 // Escape button when modal is open
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.querySelector(".modal-wrapper") !== null) {
+        closeModal();
+    }
+});
