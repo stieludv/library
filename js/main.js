@@ -49,7 +49,7 @@ function createBookElement(book) {
         <div class="book-controls">
             <span>
                 <label for="read-pages">Read:</label>
-                <input id="read-pages" name="read-pages" value="${book.read}" max="${book.pages}" min="0" step="1" type="number" />
+                <input class="read-pages" id="read-pages-${books.indexOf(book)}" name="read-pages" value="${book.read}" max="${book.pages}" min="0" step="1" type="number" />
             </span>
             <button class="bookmark-button" type="button">Bookmarks</button>
         </div>
@@ -143,6 +143,15 @@ addBook.addEventListener("click", () => {
 });
 
 
+function rerenderBookElement(index) {
+    const bookElement = createBookElement(books[index]);
+    const insertBeforeBook = document.querySelector(`[data-index="${index}"]`);
+    bookContainer.insertBefore(bookElement, insertBeforeBook);
+    insertBeforeBook.remove();
+    addBookEventListeners();
+}
+
+
 // Book buttons
 // Book read pages inputs
 
@@ -171,7 +180,14 @@ function handleBookmarkButton(e) {
     addModalEventListeners();
 };
 
-// Book button event listeners
+function handleBookReadInput(e) {
+    const bookIndex = e.target.parentElement.parentElement.parentElement.dataset.index;
+    const book = books[bookIndex];
+    book.read = Number(e.target.value);
+    rerenderBookElement(bookIndex);
+}
+
+// Book event listeners
 function addBookEventListeners() {
     // Book remove button
     const removeBookButtons = document.querySelectorAll(".remove-book");
@@ -184,6 +200,12 @@ function addBookEventListeners() {
             // Remove book from DOM
             e.target.parentElement.remove();
         });
+    });
+
+    // Book read pages inputs
+    const readPagesInputs = document.querySelectorAll(".read-pages");
+    readPagesInputs.forEach(input => {
+        input.addEventListener("change", handleBookReadInput);
     });
 
     // Bookmark button
