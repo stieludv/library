@@ -1,4 +1,11 @@
 const books = [];
+const libraryInformation = {
+    books: books.length,
+    total_pages: 0,
+    total_read_pages: 0,
+    completed_books: 0,
+    uncompleted_books: 0
+}
 
 function Book(title, author, pages, read) {
     // Accepts title, author, pages and read arguments
@@ -106,24 +113,24 @@ addBook.addEventListener("click", () => {
     const modalBody = `
         <form class="add-book-form" method="GET" action="#">
             <fieldset>
-                <label for="title">Title:</label>
-                <input id="title" name="title" type="text" required />
+                <label for="add-book-title">Title:</label>
+                <input id="add-book-title" name="title" type="text" required />
             </fieldset>
             <fieldset>
-                <label for="author">Author:</label>
-                <input id="author" name="author" type="text" required />
+                <label for="add-book-author">Author:</label>
+                <input id="add-book-author" name="author" type="text" required />
             </fieldset>
             <fieldset>
-                <label for="pages">Pages:</label>
-                <input id="pages" name="pages" type="number" min="0" required />
+                <label for="add-book-pages">Pages:</label>
+                <input id="add-book-pages" name="pages" type="number" min="0" required />
             </fieldset>
             <fieldset>
-                <label for="read-pages">Read Pages:</label>
-                <input id="read-pages" name="read-pages" type="number" min="0" required />
+                <label for="add-book-read-pages">Read Pages:</label>
+                <input id="add-book-read-pages" name="read-pages" type="number" min="0" required />
             </fieldset>
     `;
     const modalFooter = `
-            <button type="button">Add Book</button>
+            <button class="add-book-button" type="submit">Add Book</button>
         </form>
     `;
     // const modal = createModal("Add Book", "Add a new book to the library", "Add");
@@ -134,7 +141,6 @@ addBook.addEventListener("click", () => {
     // When user clicks submit, create a new book and add it to the book-container
     
 });
-
 
 
 // Book buttons
@@ -178,6 +184,23 @@ function addModalEventListeners() {
             if (e.target === modalWrapper) {
                 closeModal();
             }
+        });
+    }
+
+    const addBookButton = document.querySelector(".add-book-button");
+    if (addBookButton !== null) {
+        addBookButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            const title = document.querySelector("#add-book-title").value;
+            const author = document.querySelector("#add-book-author").value;
+            const pages = document.querySelector("#add-book-pages").value;
+            const read = document.querySelector("#add-book-read-pages").value;
+            const book = new Book(title, author, pages, read);
+            books.push(book);
+            const bookElement = createBookElement(book);
+            bookContainer.insertBefore(bookElement, addBook);
+            addBookEventListeners();
+            closeModal();
         });
     }
 }
