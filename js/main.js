@@ -51,7 +51,7 @@ function createBookElement(book) {
                 <label for="read-pages">Read:</label>
                 <input id="read-pages" name="read-pages" value="${book.read}" max="${book.pages}" min="0" step="1" type="number" />
             </span>
-            <button type="button">Bookmarks</button>
+            <button class="add-bookmark" type="button">Bookmarks</button>
         </div>
     `;
 
@@ -162,6 +162,32 @@ function addBookEventListeners() {
 
             // Remove book from DOM
             e.target.parentElement.remove();
+        });
+    });
+
+    const addBookMarkButton = document.querySelectorAll(".add-bookmark");
+    addBookMarkButton.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const bookIndex = e.target.parentElement.parentElement.dataset.index;
+            const book = books[bookIndex];
+            // Open modal with inputs for a new book
+            // When the input/textarea is clicked it should expand so you can easily read and write/rewrite notes for every bookmark
+            // When you create a bookmark (in the footer of the modal we put the controls for this) the bookmarks page is the title plus Bookmark #n
+            const modalBody = `
+                <form class="add-book-form" method="GET" action="#">
+                    <fieldset>
+                        <label for="bookmark-1">Bookmark #1: Page 234</label>
+                        <textarea id="bookmark-1" name="bookmark-1" type="text" required value="My notes about this bookmark/page..." />
+                    </fieldset>
+                    <fieldset>
+                        <label for="bookmark-2">Bookmark #2: Page 10</label>
+                        <textarea id="bookmark-2" name="bookmark-2" type="text" required value="Notes about this page and book..." />
+                    </fieldset>
+                </form>
+            `;
+            const modal = createModal("Bookmarks", modalBody, "");
+            document.body.insertAdjacentHTML("beforeend", modal);
+            addModalEventListeners();
         });
     });
 }

@@ -16,6 +16,10 @@ button {
     cursor: pointer;
 }
 
+/* button, input {
+    background-color: var(--light-color);
+} */
+
 .container {
     display: grid;
     grid-template-rows: 100px 1fr;
