@@ -7,6 +7,64 @@ const libraryInformation = {
     uncompleted_books: 0
 }
 
+/*
+document.addEventListener("booksArray:mutation", () => {
+    updateLibraryInformation();
+});
+dispatchEvent(new Event("booksArray:mutation"));
+*/
+
+
+// Look for changes to books array (mutations) by checking for mutations on the books inside DOM
+let observer = new MutationObserver(mutations => {
+    updateLibraryInformation();
+});
+
+const bookList = document.querySelector(".book-container");
+observer.observe(bookList, { attributes: true, childList: true });
+
+
+function addBook(book) {
+    books.push(book);
+    updateLibraryInformation();
+}
+
+
+function updateLibraryInformation() {
+    libraryInformation.books = books.length;
+    libraryInformation.total_pages = 0;
+    libraryInformation.total_read_pages = 0;
+    libraryInformation.completed_books = 0;
+    libraryInformation.uncompleted_books = 0;
+
+    books.forEach(book => {
+        libraryInformation.total_pages += book.pages;
+        if (book.read === book.pages) {
+            libraryInformation.completed_books++;
+        }
+        else {
+            libraryInformation.uncompleted_books++;
+        }
+        if (book.read > 0) {
+            libraryInformation.total_read_pages += book.read;
+        }
+    });
+
+    updateLibraryBook();
+}
+
+// Update library book in DOM
+function updateLibraryBook() {
+    const libraryList = document.querySelector(".library-list");
+    libraryList.innerHTML = `
+        <li>Books: ${libraryInformation.books}</li>
+        <li>Completed Books: ${libraryInformation.completed_books}</li>
+        <li>Uncompleted Books: ${libraryInformation.uncompleted_books}</li>
+        <li>Total Pages: ${libraryInformation.total_pages}</li>
+        <li>Total Read Pages: ${libraryInformation.total_read_pages}</li>
+    `;
+}
+
 function Book(title, author, pages, read) {
     // Accepts title, author, pages and read arguments
     this.title = title; 
@@ -29,10 +87,10 @@ Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${readStatus}`;
 }
 
-books.push(new Book("The Hobbit", "J.R.R. Tolkien", 295, 0));
-books.push(new Book("The Hobbit", "J.R.R. Tolkien", 295, 78));
-books.push(new Book("The Hobbit", "J.R.R. Tolkien", 295, 295));
-console.log(books)
+// Dummy data for testing
+addBook(new Book("The Hobbit", "J.R.R. Tolkien", 295, 0));
+addBook(new Book("The Hobbit", "J.R.R. Tolkien", 295, 78));
+addBook(new Book("The Hobbit", "J.R.R. Tolkien", 295, 295));
 
 // Create the book elements for the book-container
 function createBookElement(book) {
@@ -65,12 +123,12 @@ function createBookElement(book) {
 const bookContainer = document.querySelector(".book-container");
 
 // Get the "book" that we want to insert before
-const addBook = document.querySelector(".add-book");
+const addBookBook = document.querySelector(".add-book");
 
 // For every book in books, generate and insert book element
 books.forEach(book => {
     const bookElement = createBookElement(book);
-    bookContainer.insertBefore(bookElement, addBook);
+    bookContainer.insertBefore(bookElement, addBookBook);
     addBookEventListeners();
 });
 
@@ -108,7 +166,7 @@ function closeModal() {
 // Event listeners
 
 // Add book button
-addBook.addEventListener("click", () => {
+addBookBook.addEventListener("click", () => {
     // Open modal with inputs for a new book
     const modalBody = `
         <form class="add-book-form" method="GET" action="#">
@@ -245,9 +303,9 @@ function addModalEventListeners() {
             const pages = document.querySelector("#add-book-pages").value;
             const read = document.querySelector("#add-book-read-pages").value;
             const book = new Book(title, author, pages, read);
-            books.push(book);
+            addBook(book);
             const bookElement = createBookElement(book);
-            bookContainer.insertBefore(bookElement, addBook);
+            bookContainer.insertBefore(bookElement, addBookBook);
             addBookEventListeners();
             closeModal();
         });
