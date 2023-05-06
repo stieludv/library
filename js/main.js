@@ -30,6 +30,8 @@ console.log(books)
 // Create the book elements for the book-container
 function createBookElement(book) {
     const bookElement = document.createElement("div");
+    // Give bookElement a data attribute of the index of the book in the books array
+    bookElement.dataset.index = books.indexOf(book);
 
     bookElement.innerHTML = `
         <p>X</p>
@@ -59,4 +61,67 @@ books.forEach(book => {
     bookContainer.insertBefore(bookElement, addBook);
 });
 
-console.log(bookContainer);
+
+// Pass in title as string and body and footer as template literals HTML
+function createModal(title, body, footer) {
+    const modal = `
+        <div class="modal-wrapper">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <span>X</span>
+                </div>
+                <div class="modal-body">
+                    ${body}
+                </div>
+                <div class="modal-footer">
+                    ${footer}
+                </div>
+            </div>
+        </div>
+    `;
+
+    return modal;
+}
+
+function closeModal() {
+    // Remove modal from DOM
+    const modal = document.querySelector(".modal-wrapper");
+    modal.remove();
+}
+
+
+
+// Event listeners
+
+// Add book button
+addBook.addEventListener("click", () => {
+    // Open modal with inputs for a new book
+    const modal = createModal("Add Book", "Add a new book to the library", "Add");
+    document.body.insertAdjacentHTML("beforeend", modal);
+
+    // When user clicks submit, create a new book and add it to the book-container
+    
+});
+
+
+
+// Book buttons
+// Book read pages inputs
+
+
+// Book bookmarks button
+
+
+// Book remove button
+
+
+
+// Closing Modal:
+// Modal remove button
+
+
+// Modal wrapper click
+
+
+// Escape button when modal is open
